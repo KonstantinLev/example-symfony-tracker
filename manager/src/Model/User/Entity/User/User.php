@@ -36,6 +36,10 @@ class User
      */
     private $confirmToken;
     /**
+     * @var ResetToken|null
+     */
+    private $resetToken;
+    /**
      * @var string
      */
     private $status;
@@ -141,6 +145,11 @@ class User
         return $this->confirmToken;
     }
 
+    public function getResetToken(): ?ResetToken
+    {
+        return $this->resetToken;
+    }
+
     public function confirmSignUp(): void
     {
         if (!$this->isWait()) {
@@ -156,5 +165,16 @@ class User
     public function getNetworks(): array
     {
         return $this->networks->toArray();
+    }
+
+    public function requestPasswordReset(ResetToken $token, \DateTimeImmutable $date): void
+    {
+        if (!$this->email) {
+            throw new \DomainException('Email is not specified.');
+        }
+        if ($this->resetToken && !$this->resetToken->isExpiredTo($date)) {
+            throw new \DomainException('Resetting is already requested.');
+        }
+        $this->resetToken = $token;
     }
 }
