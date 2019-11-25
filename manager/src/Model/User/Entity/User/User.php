@@ -130,6 +130,11 @@ class User
         return $this->date;
     }
 
+    public function getName(): Name
+    {
+        return $this->name;
+    }
+
     public function getEmail(): ?Email
     {
         return $this->email;
