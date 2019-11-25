@@ -7,6 +7,14 @@ class Command
     /**
      * @var string
      */
+    public $firstName;
+    /**
+     * @var string
+     */
+    public $lastName;
+    /**
+     * @var string
+     */
     public $email;
     /**
      * @var string
