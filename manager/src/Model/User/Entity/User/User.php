@@ -76,4 +76,13 @@ class User
     {
         return $this->confirmToken;
     }
+
+    public function confirmSignUp(): void
+    {
+        if (!$this->isWait()) {
+            throw new \DomainException('User is already confirmed.');
+        }
+        $this->status = self::STATUS_ACTIVE;
+        $this->confirmToken = null;
+    }
 }
