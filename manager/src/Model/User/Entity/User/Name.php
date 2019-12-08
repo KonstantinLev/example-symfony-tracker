@@ -3,7 +3,11 @@
 namespace App\Model\User\Entity\User;
 
 use Webmozart\Assert\Assert;
+use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @ORM\Embeddable
+ */
 class Name
 {
     /**
