@@ -20,4 +20,8 @@ class RoleType extends StringType
     {
         return self::NAME;
     }
+    public function requiresSQLCommentHint(AbstractPlatform $platform) : bool
+    {
+        return true;
+    }
 }
