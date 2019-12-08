@@ -4,6 +4,14 @@ namespace App\Model\User\Entity\User;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
+/**
+ * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
+ * @ORM\Table(name="user_users", uniqueConstraints={
+ *     @ORM\UniqueConstraint(columns={"email"}),
+ *     @ORM\UniqueConstraint(columns={"reset_token_token"})
+ * })
+ */
 class User
 {
     private const STATUS_NEW = 'new';
@@ -12,10 +20,13 @@ class User
 
     /**
      * @var Id
+     * @ORM\Column(type="user_user_id")
+     * @ORM\Id
      */
     private $id;
     /**
      * @var \DateTimeImmutable
+     * @ORM\Column(type="datetime_immutable")
      */
     private $date;
     /**
@@ -25,30 +36,37 @@ class User
     private $name;
     /**
      * @var Email|null
+     * @ORM\Column(type="user_user_email", nullable=true)
      */
     private $email;
     /**
      * @var string|null
+     * @ORM\Column(type="string", name="password_hash", nullable=true)
      */
     private $passwordHash;
     /**
      * @var string|null
+     * @ORM\Column(type="string", name="confirm_token", nullable=true)
      */
     private $confirmToken;
     /**
      * @var ResetToken|null
+     * @ORM\Embedded(class="ResetToken", columnPrefix="reset_token_")
      */
     private $resetToken;
     /**
      * @var string
+     * @ORM\Column(type="string", length=16)
      */
     private $status;
     /**
      * @var Role
+     * @ORM\Column(type="user_user_role", length=16)
      */
     private $role;
     /**
      * @var Network[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="Network", mappedBy="user", orphanRemoval=true, cascade={"persist"})
      */
     private $networks;
 
@@ -180,6 +198,16 @@ class User
     public function getNetworks(): array
     {
         return $this->networks->toArray();
+    }
+
+    /**
+     * @ORM\PostLoad()
+     */
+    public function checkEmbeds(): void
+    {
+        if ($this->resetToken->isEmpty()) {
+            $this->resetToken = null;
+        }
     }
 
     public function requestPasswordReset(ResetToken $token, \DateTimeImmutable $date): void
