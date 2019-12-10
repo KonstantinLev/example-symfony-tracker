@@ -15,22 +15,33 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
+use App\Model\User\Service\PasswordHasher;
 
 class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 {
     use TargetPathTrait;
+
     private $urlGenerator;
     private $csrfTokenManager;
-    public function __construct(UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager)
+    private $hasher;
+
+    public function __construct(
+        UrlGeneratorInterface $urlGenerator,
+        CsrfTokenManagerInterface $csrfTokenManager,
+        PasswordHasher $hasher
+    )
     {
         $this->urlGenerator = $urlGenerator;
         $this->csrfTokenManager = $csrfTokenManager;
+        $this->hasher = $hasher;
     }
+
     public function supports(Request $request): bool
     {
         return 'app_login' === $request->attributes->get('_route')
             && $request->isMethod('POST');
     }
+
     public function getCredentials(Request $request): array
     {
         $credentials = [
@@ -44,6 +55,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         );
         return $credentials;
     }
+
     public function getUser($credentials, UserProviderInterface $userProvider): UserInterface
     {
         $token = new CsrfToken('authenticate', $credentials['csrf_token']);
@@ -59,12 +71,15 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         }
         return $user;
     }
-    public function checkCredentials($credentials, UserInterface $user)
+
+    public function checkCredentials($credentials, UserInterface $user): bool
     {
         // Check the user's password or other credentials and return true or false
         // If there are no credentials to check, you can just return true
-        throw new \Exception('TODO: check the credentials inside '.__FILE__);
+        //throw new \Exception('TODO: check the credentials inside '.__FILE__);
+        return $this->hasher->validate($credentials['password'], $user->getPassword());
     }
+
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
@@ -74,6 +89,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         //throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
         return new RedirectResponse($this->urlGenerator->generate('home'));
     }
+
     protected function getLoginUrl(): string
     {
         return $this->urlGenerator->generate('app_login');
