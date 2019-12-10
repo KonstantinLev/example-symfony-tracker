@@ -18,7 +18,7 @@ docker-pull:
 docker-build:
 	docker-compose build
 
-manager-init: manager-composer-install manager-wait-db manager-migrations
+manager-init: manager-composer-install manager-wait-db manager-migrations manager-fixtures
 
 manager-composer-install:
 	docker-compose run --rm manager-php-cli composer install
@@ -31,6 +31,9 @@ manager-wait-db:
 
 manager-migrations:
 	docker-compose run --rm manager-php-cli php bin/console doctrine:migrations:migrate --no-interaction
+
+manager-fixtures:
+	docker-compose run --rm manager-php-cli php bin/console doctrine:fixtures:load --no-interaction
 
 manager-test:
 	docker-compose run --rm manager-php-cli php bin/phpunit
