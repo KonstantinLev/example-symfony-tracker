@@ -3,6 +3,7 @@
 namespace App\Security;
 
 use Symfony\Component\Security\Core\User\UserInterface;
+use App\Model\User\Entity\User\User;
 
 class UserIdentity implements UserInterface
 {
@@ -10,23 +11,31 @@ class UserIdentity implements UserInterface
     private $username;
     private $password;
     private $role;
+    private $status;
 
     public function __construct(
         string $id,
         string $username,
         string $password,
-        string $role
+        string $role,
+        string $status
     )
     {
         $this->id = $id;
         $this->username = $username;
         $this->password = $password;
         $this->role = $role;
+        $this->status = $status;
     }
 
     public function getId(): string
     {
         return $this->id;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->status === User::STATUS_ACTIVE;
     }
 
     public function getUsername(): string
