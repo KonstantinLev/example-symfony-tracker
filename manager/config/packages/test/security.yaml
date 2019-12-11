@@ -1,0 +1,8 @@
+security:
+  firewalls:
+    main:
+      http_basic: ~
+liip_functional_test:
+  authentication:
+    username: "admin@app.test"
+    password: "password"
