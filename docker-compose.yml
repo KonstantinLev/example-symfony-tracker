@@ -11,6 +11,7 @@ services:
     ports:
       - "8080:80"
   manager-php-fpm:
+    container_name: php-fpm
     build:
       context: ./manager/docker/development
       dockerfile: php-fpm.docker
@@ -21,6 +22,7 @@ services:
       - manager-redis
       - mailer
   manager-php-cli:
+    container_name: php-cli
     build:
       context: ./manager/docker/development
       dockerfile: php-cli.docker
