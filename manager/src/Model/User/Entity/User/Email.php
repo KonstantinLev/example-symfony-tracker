@@ -16,8 +16,14 @@ class Email
         }
         $this->value = mb_strtolower($value);
     }
+
     public function getValue(): string
     {
         return $this->value;
+    }
+
+    public function isEqual(self $other): bool
+    {
+        return $this->getValue() === $other->getValue();
     }
 }
