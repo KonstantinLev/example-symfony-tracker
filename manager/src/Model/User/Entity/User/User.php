@@ -163,6 +163,11 @@ class User
         return $this->name;
     }
 
+    public function changeName(Name $name): void
+    {
+        $this->name = $name;
+    }
+
     public function getEmail(): ?Email
     {
         return $this->email;
@@ -214,6 +219,7 @@ class User
     {
         return $this->newEmailToken;
     }
+
 
     /**
      * @ORM\PostLoad()

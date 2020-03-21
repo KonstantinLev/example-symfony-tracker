@@ -28,8 +28,8 @@ class Handler
             Id::next(),
             new \DateTimeImmutable(),
             new Name(
-                'Network',
-                'Network'
+                $command->firstName,
+                $command->lastName
             ),
             $command->network,
             $command->identity

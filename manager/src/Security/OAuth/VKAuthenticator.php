@@ -41,14 +41,19 @@ class VKAuthenticator extends SocialAuthenticator
     }
     public function getUser($credentials, UserProviderInterface $userProvider): UserInterface
     {
-        $facebookUser = $this->getVKClient()->fetchUserFromToken($credentials);
+        $vkUser = $this->getVKClient()->fetchUserFromToken($credentials);
         $network = 'vk';
-        $id = $facebookUser->getId();
+        $id = $vkUser->getId();
         $username = $network . ':' . $id;
+
+        $command = new Command($network, $id);
+        $command->firstName = $vkUser->getFirstName();
+        $command->lastName = $vkUser->getLastName();
+
         try {
             return $userProvider->loadUserByUsername($username);
         } catch (UsernameNotFoundException $e) {
-            $this->handler->handle(new Command($network, $id));
+            $this->handler->handle($command);
             return $userProvider->loadUserByUsername($username);
         }
     }

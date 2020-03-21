@@ -33,11 +33,18 @@
                         </div>
 
                         <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="icon-user"></i></span>
+                            </div>
                             {{ form_widget(form.firstName, {'attr': {'placeholder': 'First Name'}}) }}
+                            {{ form_errors(form.firstName) }}
                         </div>
-
                         <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="icon-user"></i></span>
+                            </div>
                             {{ form_widget(form.lastName, {'attr': {'placeholder': 'Last Name'}}) }}
+                            {{ form_errors(form.lastName) }}
                         </div>
 
                         <button type="submit" class="btn btn-block btn-success">Create Account</button>
