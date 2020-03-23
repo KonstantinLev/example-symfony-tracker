@@ -12,6 +12,7 @@ use App\Model\User\UseCase\Edit;
 use App\Model\User\UseCase\Role;
 use App\Model\User\UseCase\SignUp\Confirm;
 use App\ReadModel\User\UserFetcher;
+use App\ReadModel\User\Filter;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,9 +39,20 @@ class UsersController extends AbstractController
      */
     public function index(Request $request, UserFetcher $fetcher): Response
     {
-        $users = $fetcher->all();
+        //$users = $fetcher->all();
+        //return $this->render('app/users/index.html.twig', compact('users'));
 
-        return $this->render('app/users/index.html.twig', compact('users'));
+        $filter = new Filter\Filter();
+
+        $form = $this->createForm(Filter\Form::class, $filter);
+        $form->handleRequest($request);
+
+        $users = $fetcher->all($filter);
+
+        return $this->render('app/users/index.html.twig', [
+            'users' => $users,
+            'form' => $form->createView(),
+        ]);
     }
 
     /**
