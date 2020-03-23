@@ -285,6 +285,12 @@ class User
         $this->role = $role;
     }
 
+    public function edit(Email $email, Name $name): void
+    {
+        $this->name = $name;
+        $this->email = $email;
+    }
+
     public function activate(): void
     {
         if ($this->isActive()) {
