@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/users")
+ * @Route("/users", name="users")
  */
 class UsersController extends AbstractController
 {
@@ -34,7 +34,7 @@ class UsersController extends AbstractController
     }
 
     /**
-     * @Route("", name="users")
+     * @Route("", name="")
      * @param Request $request
      * @param UserFetcher $fetcher
      * @return Response
@@ -66,7 +66,7 @@ class UsersController extends AbstractController
     }
 
     /**
-     * @Route("/create", name="users.create")
+     * @Route("/create", name=".create")
      * @param Request $request
      * @param Create\Handler $handler
      * @return Response
@@ -94,7 +94,7 @@ class UsersController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="users.edit")
+     * @Route("/{id}/edit", name=".edit")
      * @param User $user
      * @param Request $request
      * @param Edit\Handler $handler
@@ -124,7 +124,7 @@ class UsersController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/role", name="users.role")
+     * @Route("/{id}/role", name=".role")
      * @param User $user
      * @param Request $request
      * @param Role\Handler $handler
@@ -159,7 +159,7 @@ class UsersController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/confirm", name="users.confirm", methods={"POST"})
+     * @Route("/{id}/confirm", name=".confirm", methods={"POST"})
      * @param User $user
      * @param Request $request
      * @param Confirm\Manual\Handler $handler
@@ -184,7 +184,7 @@ class UsersController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/activate", name="users.activate", methods={"POST"})
+     * @Route("/{id}/activate", name=".activate", methods={"POST"})
      * @param User $user
      * @param Request $request
      * @param Activate\Handler $handler
@@ -209,7 +209,7 @@ class UsersController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/block", name="users.block", methods={"POST"})
+     * @Route("/{id}/block", name=".block", methods={"POST"})
      * @param User $user
      * @param Request $request
      * @param Block\Handler $handler
@@ -239,7 +239,7 @@ class UsersController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="users.show")
+     * @Route("/{id}", name=".show")
      * @param User $user
      * @return Response
      */
