@@ -7,6 +7,7 @@
         "ext-iconv": "*",
         "finesse/swiftmailer-defaults-plugin": "^2.0",
         "j4k/oauth2-vkontakte": "^1.1",
+        "knplabs/knp-menu-bundle": "^3.0",
         "knplabs/knp-paginator-bundle": "^5.1",
         "knpuniversity/oauth2-client-bundle": "^1.28",
         "predis/predis": "^1.1",
