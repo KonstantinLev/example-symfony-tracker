@@ -26,7 +26,8 @@ class GroupFetcher
             ->orderBy('name')
             ->execute();
 
-        return array_column($stmt->fetchAll(FetchMode::ASSOCIATIVE), 'name', 'id');
+        //return array_column($stmt->fetchAll(FetchMode::ASSOCIATIVE), 'name', 'id');
+        return $stmt->fetchAll(\PDO::FETCH_KEY_PAIR);
     }
 
 
