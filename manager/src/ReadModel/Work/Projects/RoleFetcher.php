@@ -34,4 +34,18 @@ class RoleFetcher
             ]);
         }, $stmt->fetchAll(FetchMode::ASSOCIATIVE));
     }
+
+    public function allList(): array
+    {
+        $stmt = $this->connection->createQueryBuilder()
+            ->select(
+                'id',
+                'name'
+            )
+            ->from('work_projects_roles')
+            ->orderBy('name')
+            ->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_KEY_PAIR);
+    }
 }
