@@ -5,7 +5,7 @@ namespace App\Controller\Auth;
 use App\Model\User\UseCase\SignUp;
 use App\ReadModel\User\UserFetcher;
 use App\Security\LoginFormAuthenticator;
-use Psr\Log\LoggerInterface;
+use App\Controller\ErrorHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,12 +15,12 @@ use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 
 class SignUpController extends AbstractController
 {
-    private $logger;
+    private $errors;
     private $users;
 
-    public function __construct(LoggerInterface $logger, UserFetcher $users)
+    public function __construct(ErrorHandler $errors, UserFetcher $users)
     {
-        $this->logger = $logger;
+        $this->errors = $errors;
         $this->users = $users;
     }
     /**
@@ -40,7 +40,8 @@ class SignUpController extends AbstractController
                 $this->addFlash('success', 'Check your email.');
                 return $this->redirectToRoute('home');
             } catch (\DomainException $e) {
-                $this->logger->warning($e->getMessage(), ['exception' => $e]);
+                //$this->logger->warning($e->getMessage(), ['exception' => $e]);
+                $this->errors->handle($e);
                 $this->addFlash('error', $e->getMessage());
             }
         }
@@ -85,7 +86,8 @@ class SignUpController extends AbstractController
             //$this->addFlash('success', 'Email is successfully confirmed.');
             //return $this->redirectToRoute('home');
         } catch (\DomainException $e) {
-            $this->logger->warning($e->getMessage(), ['exception' => $e]);
+            //$this->logger->warning($e->getMessage(), ['exception' => $e]);
+            $this->errors->handle($e);
             $this->addFlash('error', $e->getMessage());
             return $this->redirectToRoute('auth.signup');
         }
