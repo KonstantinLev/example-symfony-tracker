@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Work\Projects\Project;
 
 use App\Annotation\Guid;
+use App\Security\Voter\Work\ProjectAccess;
 use App\Model\Work\Entity\Projects\Project\Project;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,6 +23,7 @@ class ProjectController extends AbstractController
      */
     public function show(Project $project): Response
     {
+        $this->denyAccessUnlessGranted(ProjectAccess::VIEW, $project);
         return $this->render('app/work/projects/project/show.html.twig', compact('project'));
     }
 }
