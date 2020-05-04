@@ -57,6 +57,14 @@ class Task
         $this->project = $project;
     }
 
+    public function changeType(Type $type): void
+    {
+        if ($this->type->isEqual($type)) {
+            throw new \DomainException('Type is already same.');
+        }
+        $this->type = $type;
+    }
+
     public function setChildOf(?Task $parent): void
     {
         if ($parent) {
