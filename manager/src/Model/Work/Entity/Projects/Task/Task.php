@@ -49,6 +49,14 @@ class Task
         $this->content = $content;
     }
 
+    public function move(Project $project): void
+    {
+        if ($project === $this->project) {
+            throw new \DomainException('Project is already same.');
+        }
+        $this->project = $project;
+    }
+
     public function setChildOf(?Task $parent): void
     {
         if ($parent) {
