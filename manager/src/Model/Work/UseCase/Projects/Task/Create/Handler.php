@@ -34,24 +34,52 @@ class Handler
         $member = $this->members->get(new MemberId($command->member));
         $project = $this->projects->get(new ProjectId($command->project));
 
-        $task = new Task(
-            $this->tasks->nextId(),
-            $project,
-            $member,
-            new \DateTimeImmutable(),
-            new Type($command->type),
-            $command->priority,
-            $command->name,
-            $command->content
-        );
+//        $task = new Task(
+//            $this->tasks->nextId(),
+//            $project,
+//            $member,
+//            new \DateTimeImmutable(),
+//            new Type($command->type),
+//            $command->priority,
+//            $command->name,
+//            $command->content
+//        );
+//
+//        if ($command->parent) {
+//            $parent = $this->tasks->get(new Id($command->parent));
+//            $task->setChildOf($parent);
+//        }
 
-        if ($command->parent) {
-            $parent = $this->tasks->get(new Id($command->parent));
-            $task->setChildOf($parent);
-        }
+        $parent = $command->parent ? $this->tasks->get(new Id($command->parent)) : null;
 
-        if ($command->plan) {
-            $task->plan($command->plan);
+//        if ($command->plan) {
+//            $task->plan($command->plan);
+//        }
+
+        $date = new \DateTimeImmutable();
+
+        foreach ($command->names as $name) {
+            $task = new Task(
+                $this->tasks->nextId(),
+                $project,
+                $member,
+                $date,
+                new Type($command->type),
+                $command->priority,
+                $name->name,
+                $command->content
+            );
+
+            if ($parent) {
+                $task->setChildOf($parent);
+            }
+            if ($command->plan) {
+                $task->plan($command->plan);
+            }
+
+            $date = $date->modify('+1 sec');
+
+            $this->tasks->add($task);
         }
 
         $this->tasks->add($task);
