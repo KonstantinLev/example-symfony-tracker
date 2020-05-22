@@ -5,6 +5,7 @@ namespace App\Tests\Builder\User;
 use App\Model\User\Entity\User\Email;
 use App\Model\User\Entity\User\Id;
 use App\Model\User\Entity\User\Name;
+use App\Model\User\Entity\User\Role;
 use App\Model\User\Entity\User\User;
 
 class UserBuilder
@@ -68,6 +69,13 @@ class UserBuilder
         return $clone;
     }
 
+    public function withRole(Role $role): self
+    {
+        $clone = clone $this;
+        $clone->role = $role;
+        return $clone;
+    }
+
 
     public function build(): User
     {
@@ -101,6 +109,11 @@ class UserBuilder
         if (!$user) {
             throw new \BadMethodCallException('Specify via method.');
         }
+
+        if ($this->role) {
+            $user->changeRole($this->role);
+        }
+
         return $user;
     }
 }
