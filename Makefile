@@ -53,6 +53,9 @@ manager-test:
 manager-assets-dev:
 	docker-compose run --rm manager-node npm run dev
 
+unit-tests:
+	docker-compose run --rm manager-php-cli php bin/phpunit --testsuite=unit
+
 build-production:
     docker build --pull --file=manager/docker/production/nginx.docker --tag ${REGISTRY_ADDRESS}/manager-nginx:${IMAGE_TAG} manager
     docker build --pull --file=manager/docker/production/php-fpm.docker --tag ${REGISTRY_ADDRESS}/manager-php-fpm:${IMAGE_TAG} manager
