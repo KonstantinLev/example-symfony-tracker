@@ -76,7 +76,6 @@ class UserBuilder
         return $clone;
     }
 
-
     public function build(): User
     {
         $user = null;
