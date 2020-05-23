@@ -21,10 +21,11 @@ class HomeTest extends WebTestCase
 
     public function testUser(): void
     {
-        $client = static::createClient([], [
-            'PHP_AUTH_USER' => 'auth-user@app.test',
-            'PHP_AUTH_PW' => 'password',
-        ]);
+//        $client = static::createClient([], [
+//            'PHP_AUTH_USER' => 'auth-user@app.test',
+//            'PHP_AUTH_PW' => 'password',
+//        ]);
+        $client = static::createClient([], AuthFixture::userCredentials());
         $crawler = $client->request('GET', '/');
 
         $this->assertSame(302, $client->getResponse()->getStatusCode());
@@ -33,10 +34,11 @@ class HomeTest extends WebTestCase
 
     public function testAdmin(): void
     {
-        $client = static::createClient([], [
-            'PHP_AUTH_USER' => 'auth-admin@app.test',
-            'PHP_AUTH_PW' => 'password',
-        ]);
+//        $client = static::createClient([], [
+//            'PHP_AUTH_USER' => 'auth-admin@app.test',
+//            'PHP_AUTH_PW' => 'password',
+//        ]);
+        $client = static::createClient([], AuthFixture::adminCredentials());
         $crawler = $client->request('GET', '/');
         $this->assertSame(200, $client->getResponse()->getStatusCode());
         $this->assertContains('Home', $crawler->filter('title')->text());
