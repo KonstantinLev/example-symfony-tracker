@@ -8,6 +8,7 @@
         "ext-iconv": "*",
         "ext-json": "^1.6",
         "cebe/markdown": "^1.2",
+        "exercise/htmlpurifier-bundle": "^3.0",
         "finesse/swiftmailer-defaults-plugin": "^2.0",
         "j4k/oauth2-vkontakte": "^1.1",
         "knplabs/knp-menu-bundle": "^3.0",

@@ -96,6 +96,18 @@
     "egulias/email-validator": {
         "version": "2.1.11"
     },
+    "exercise/htmlpurifier-bundle": {
+        "version": "3.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "3.0",
+            "ref": "4667fd2103dc4645d234591e1c85f727c6fe0d11"
+        }
+    },
+    "ezyang/htmlpurifier": {
+        "version": "v4.12.0"
+    },
     "fig/link-util": {
         "version": "1.0.0"
     },
