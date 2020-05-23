@@ -16,10 +16,10 @@ class Kernel extends BaseKernel
 
     private const CONFIG_EXTS = '.{php,xml,yaml,yml}';
 
-    protected function build(ContainerBuilder $container)
-    {
-        $container->addCompilerPass(new ProcessorCompilerPass());
-    }
+//    protected function build(ContainerBuilder $container)
+//    {
+//        $container->addCompilerPass(new ProcessorCompilerPass());
+//    }
 
     public function registerBundles(): iterable
     {
