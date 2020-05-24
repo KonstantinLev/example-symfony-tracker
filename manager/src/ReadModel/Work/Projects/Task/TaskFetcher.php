@@ -132,7 +132,16 @@ class TaskFetcher
             $qb->andWhere('t.parent_id IS NULL');
         }
 
-        $qb->orderBy($sort ?: 't.id', $direction === 'desc' ? 'desc' : 'asc');
+        //$qb->orderBy($sort ?: 't.id', $direction === 'desc' ? 'desc' : 'asc');
+
+        if (!$sort) {
+            $sort = 't.id';
+            $direction = $direction ?: 'desc';
+        } else {
+            $direction = $direction ?: 'asc';
+        }
+
+        $qb->orderBy($sort, $direction);
 
         /** @var SlidingPagination $pagination */
         $pagination = $this->paginator->paginate($qb, $page, $size);
