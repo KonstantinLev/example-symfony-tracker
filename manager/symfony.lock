@@ -159,6 +159,18 @@
             "ref": "80acc9223a205cbf5d9828fd616c82a374d281dd"
         }
     },
+    "league/flysystem": {
+        "version": "1.0.69"
+    },
+    "league/flysystem-bundle": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "8ad3ded1f39fedce098e43259741f42092a1010e"
+        }
+    },
     "league/oauth2-client": {
         "version": "1.4.2"
     },
