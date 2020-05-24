@@ -127,6 +127,11 @@ class TaskFetcher
 //        }
 
         //$qb->orderBy($sort, $direction === 'desc' ? 'desc' : 'asc');
+
+        if ($filter->roots) {
+            $qb->andWhere('t.parent_id IS NULL');
+        }
+
         $qb->orderBy($sort ?: 't.id', $direction === 'desc' ? 'desc' : 'asc');
 
         /** @var SlidingPagination $pagination */
