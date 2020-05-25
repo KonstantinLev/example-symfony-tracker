@@ -64,9 +64,9 @@
                                     class="{{ date.format('m') != result.month.format('m') ? 'muted' : '' }}"
                             >
                                 {% if date.format('Y-m-d') == now.format('Y-m-d') %}
-                                    <h3><span class="badge badge-secondary">{{ date ? date|date('d') : '' }}</span></h3>
+                                    <h3><span class="badge badge-secondary">{{ date ? date|dayTitle : '' }}</span></h3>
                                 {% else %}
-                                    {{ date ? date|date('d') : '' }}
+                                    {{ date ? date|dayTitle : '' }}
                                 {% endif %}
                             </td>
                         {% endfor %}
