@@ -60,6 +60,45 @@ main {
     }
   }
 }
+.table.calendar{
+  h3{
+    margin: 0;
+  }
+}
+.table.calendar > thead > tr >td {
+  &.muted {
+    background: #cecece;
+  }
+}
+.table.calendar > tbody > tr > td {
+  padding: 0;
+  vertical-align: top;
+
+  &.muted {
+    background: #cecece;
+  }
+
+  .day {
+    min-height: 100px;
+    padding: 0 4px;
+
+    .item {
+      background: #ddfffa;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 4px 0;
+      padding: 6px;
+
+      .header {
+        margin-bottom: 4px;
+      }
+
+      .link {
+        line-height: 1.2;
+      }
+    }
+  }
+}
 
 pre {
   padding: 9.5px;
