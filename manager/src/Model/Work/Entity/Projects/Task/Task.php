@@ -265,22 +265,34 @@ class Task
 
     public function setChildOf(?Task $parent): void
     {
-        if ($parent) {
-            $current = $parent;
-            do {
-                if ($current === $this) {
-                    throw new \DomainException('Cyclomatic children.');
-                }
-            }
-            while ($current && $current = $current->getParent());
+        if ($parent === $this->parent) {
+            return;
         }
+
+        $current = $parent;
+        do {
+            if ($current === $this) {
+                throw new \DomainException('Cyclomatic children.');
+            }
+        }
+        while ($current && $current = $current->getParent());
 
         $this->parent = $parent;
     }
 
-    public function plan(?\DateTimeImmutable $date): void
+    public function setRoot(): void
+    {
+        $this->parent = null;
+    }
+
+    public function plan(\DateTimeImmutable $date): void
     {
         $this->planDate = $date;
+    }
+
+    public function removePlan(): void
+    {
+        $this->planDate = null;
     }
 
     public function getParent(): ?Task
