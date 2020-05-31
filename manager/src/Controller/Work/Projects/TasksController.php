@@ -20,9 +20,11 @@ use App\Model\Work\UseCase\Projects\Task\Status;
 use App\Model\Work\UseCase\Projects\Task\Take;
 use App\Model\Work\UseCase\Projects\Task\TakeAndStart;
 use App\Model\Work\UseCase\Projects\Task\Type;
+use App\Model\Comment\UseCase\Comment;
 use App\ReadModel\Work\Members\Member\MemberFetcher;
 use App\ReadModel\Work\Projects\Task\Filter;
 use App\ReadModel\Work\Projects\Task\TaskFetcher;
+use App\ReadModel\Work\Projects\Task\CommentFetcher;
 use App\Service\Uploader\FileUploader;
 use App\Security\Voter\Work\Projects\TaskAccess;
 use App\Controller\ErrorHandler;
@@ -554,22 +556,26 @@ class TasksController extends AbstractController
      * @param Task $task
      * @param Request $request
      * @param MemberFetcher $members
+     * @param CommentFetcher $comments
      * @param TaskFetcher $tasks
      * @param Status\Handler $statusHandler
      * @param Progress\Handler $progressHandler
      * @param Type\Handler $typeHandler
      * @param Priority\Handler $priorityHandler
+     * @param Comment\Create\Handler $commentHandler
      * @return Response
      */
     public function show(
         Task $task,
         Request $request,
         MemberFetcher $members,
+        CommentFetcher $comments,
         TaskFetcher $tasks,
         Status\Handler $statusHandler,
         Progress\Handler $progressHandler,
         Type\Handler $typeHandler,
-        Priority\Handler $priorityHandler
+        Priority\Handler $priorityHandler,
+        Comment\Create\Handler $commentHandler
     ): Response
     {
         $this->denyAccessUnlessGranted(TaskAccess::VIEW, $task);
@@ -630,15 +636,35 @@ class TasksController extends AbstractController
             }
         }
 
+        $commentCommand = new Comment\Create\Command(
+            $this->getUser()->getId(),
+            Task::class,
+            (string)$task->getId()->getValue()
+        );
+
+        $commentForm = $this->createForm(Comment\Create\Form::class, $commentCommand);
+        $commentForm->handleRequest($request);
+        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+            try {
+                $commentHandler->handle($commentCommand);
+                return $this->redirectToRoute('work.projects.tasks.show', ['id' => $task->getId()]);
+            } catch (\DomainException $e) {
+                $this->errors->handle($e);
+                $this->addFlash('error', $e->getMessage());
+            }
+        }
+
         return $this->render('app/work/projects/tasks/show.html.twig', [
             'project' => $task->getProject(),
             'task' => $task,
             'member' => $member,
             'children' => $tasks->childrenOf($task->getId()->getValue()),
+            'comments' => $comments->allForTask($task->getId()->getValue()),
             'statusForm' => $statusForm->createView(),
             'progressForm' => $progressForm->createView(),
             'typeForm' => $typeForm->createView(),
             'priorityForm' => $priorityForm->createView(),
+            'commentForm' => $commentForm->createView(),
         ]);
     }
 }
