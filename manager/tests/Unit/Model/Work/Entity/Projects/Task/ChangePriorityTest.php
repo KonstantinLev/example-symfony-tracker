@@ -19,7 +19,8 @@ class ChangePriorityTest extends TestCase
         $project = (new ProjectBuilder())->build();
         $task = (new TaskBuilder())->build($project, $member);
 
-        $task->changePriority($priority = 3);
+        //$task->changePriority($priority = 3);
+        $task->changePriority($member, new \DateTimeImmutable(), $priority = 3);
 
         self::assertEquals($priority, $task->getPriority());
     }
@@ -31,10 +32,12 @@ class ChangePriorityTest extends TestCase
         $project = (new ProjectBuilder())->build();
         $task = (new TaskBuilder())->build($project, $member);
 
-        $task->changePriority($priority = 3);
+        //$task->changePriority($priority = 3);
+        $task->changePriority($member, new \DateTimeImmutable(), $priority = 3);
 
         $this->expectExceptionMessage('Priority is already same.');
-        $task->changePriority($priority);
+        //$task->changePriority($priority);
+        $task->changePriority($member, new \DateTimeImmutable(), $priority);
     }
 
     public function testIncorrect(): void
@@ -45,6 +48,7 @@ class ChangePriorityTest extends TestCase
         $task = (new TaskBuilder())->build($project, $member);
 
         $this->expectException(\InvalidArgumentException::class);
-        $task->changePriority(6);
+        //$task->changePriority(6);
+        $task->changePriority($member, new \DateTimeImmutable(), 6);
     }
 }
