@@ -22,6 +22,7 @@ use App\Model\Work\UseCase\Projects\Task\TakeAndStart;
 use App\Model\Work\UseCase\Projects\Task\Type;
 use App\Model\Comment\UseCase\Comment;
 use App\ReadModel\Work\Members\Member\MemberFetcher;
+use App\ReadModel\Work\Projects\ActionFetcher;
 use App\ReadModel\Work\Projects\Task\Filter;
 use App\ReadModel\Work\Projects\Task\TaskFetcher;
 use App\ReadModel\Work\Projects\Task\CommentFetcher;
@@ -572,6 +573,7 @@ class TasksController extends AbstractController
      * @param Request $request
      * @param MemberFetcher $members
      * @param CommentFetcher $comments
+     * @param ActionFetcher $actions
      * @param TaskFetcher $tasks
      * @param Status\Handler $statusHandler
      * @param Progress\Handler $progressHandler
@@ -585,6 +587,7 @@ class TasksController extends AbstractController
         Request $request,
         MemberFetcher $members,
         CommentFetcher $comments,
+        ActionFetcher $actions,
         TaskFetcher $tasks,
         Status\Handler $statusHandler,
         Progress\Handler $progressHandler,
@@ -679,6 +682,7 @@ class TasksController extends AbstractController
             'member' => $member,
             'children' => $tasks->childrenOf($task->getId()->getValue()),
             'comments' => $comments->allForTask($task->getId()->getValue()),
+            'actions' => $actions->allForTask($task->getId()->getValue()),
             'statusForm' => $statusForm->createView(),
             'progressForm' => $progressForm->createView(),
             'typeForm' => $typeForm->createView(),
