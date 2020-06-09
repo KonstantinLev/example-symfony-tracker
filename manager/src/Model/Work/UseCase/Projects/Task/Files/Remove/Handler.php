@@ -32,6 +32,6 @@ class Handler
         //$task->removeFile(new FileId($command->file));
         $task->removeFile($actor, new \DateTimeImmutable(), new FileId($command->file));
 
-        $this->flusher->flush();
+        $this->flusher->flush($task);
     }
 }

@@ -58,6 +58,8 @@ class Handler
 
         $date = new \DateTimeImmutable();
 
+        $tasks = [];
+
         foreach ($command->names as $name) {
             $task = new Task(
                 $this->tasks->nextId(),
@@ -82,10 +84,12 @@ class Handler
             $date = $date->modify('+1 sec');
 
             $this->tasks->add($task);
+
+            $tasks[] = $task;
         }
 
-        $this->tasks->add($task);
+        //$this->tasks->add($task);
 
-        $this->flusher->flush();
+        $this->flusher->flush(...$tasks);
     }
 }

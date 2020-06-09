@@ -35,6 +35,6 @@ class Handler
         //$task->plan($command->date);
         $task->plan($actor, new \DateTimeImmutable(), $command->date);
 
-        $this->flusher->flush();
+        $this->flusher->flush($task);
     }
 }
