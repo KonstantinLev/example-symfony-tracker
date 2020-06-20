@@ -20,6 +20,7 @@ services:
     depends_on:
       - manager-postgres
       - manager-redis
+      - manager-queue-redis
       - storage
       - mailer
   manager-php-cli:
@@ -33,6 +34,7 @@ services:
     depends_on:
       - manager-postgres
       - manager-redis
+      - manager-queue-redis
       - storage
       - mailer
   manager-node:
@@ -40,6 +42,20 @@ services:
     volumes:
       - ./manager:/app
     working_dir: /app
+  manager-queue-worker:
+    build:
+      context: ./manager/docker/development
+      dockerfile: php-cli.docker
+    volumes:
+      - ./manager:/app
+      - composer:/root/.composer/cache
+    depends_on:
+      - manager-postgres
+      - manager-redis
+      - manager-queue-redis
+      - storage
+      - mailer
+    command: sh -c "until [ -f .ready ] ; do sleep 1 ; done && php bin/console messenger:consume async -vv"
   manager-node-watch:
     image: node:11.13-alpine
     volumes:
@@ -61,6 +77,10 @@ services:
     volumes:
       - manager-redis:/data
     command: redis-server --requirepass secret
+  manager-queue-redis:
+    image: redis:5.0-alpine
+    volumes:
+      - manager-queue-redis:/data
   storage:
     build:
       context: ./storage/docker/development
@@ -86,3 +106,4 @@ volumes:
   composer:
   manager-postgres:
   manager-redis:
+  manager-queue-redis:
