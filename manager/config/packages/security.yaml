@@ -17,9 +17,10 @@ security:
             pattern: ^/api
             anonymous: true
             stateless: true
-            user_checker: App\Security\UserChecker
-            http_basic:
-                provider: fetcher
+            #user_checker: App\Security\UserChecker
+            #http_basic:
+                #provider: fetcher
+            oauth2: true
         main:
             anonymous: true
             user_checker: App\Security\UserChecker
