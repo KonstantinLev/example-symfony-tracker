@@ -4,22 +4,19 @@ declare(strict_types=1);
 
 namespace App\Twig\Extension\Work;
 
-use App\Service\Work\Processor\Driver\Driver;
+use App\Service\Work\Processor\Processor;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 class ProcessorExtension extends AbstractExtension
 {
-    /**
-     * @var Driver[]
-     */
-    private $drivers;
+    private $processor;
 
     //public function __construct(array $drivers)
-    public function __construct(iterable $drivers)
+    public function __construct(Processor $processor)
     {
         //Assert::allIsInstanceOf($drivers, Driver::class);
-        $this->drivers = $drivers;
+        $this->processor = $processor;
     }
 
     public function getFilters(): array
@@ -31,10 +28,6 @@ class ProcessorExtension extends AbstractExtension
 
     public function process(?string $text): string
     {
-        $result = $text;
-        foreach ($this->drivers as $driver) {
-            $result = $driver->process($result);
-        }
-        return $result;
+        return $this->processor->process($text);
     }
 }
