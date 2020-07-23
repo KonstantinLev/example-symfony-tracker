@@ -33,7 +33,8 @@ class Handler
         $task = $this->tasks->get(new Id($command->id));
 
         //$task->plan(null);
-        $task->plan($actor, new \DateTimeImmutable(), null);
+        //$task->plan($actor, new \DateTimeImmutable(), null);
+        $task->removePlan($actor, new \DateTimeImmutable());
 
         $this->flusher->flush($task);
     }
