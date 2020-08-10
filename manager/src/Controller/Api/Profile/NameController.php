@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use OpenApi\Annotations as OA;
 
 class NameController extends AbstractController
 {
@@ -25,6 +26,39 @@ class NameController extends AbstractController
     }
 
     /**
+     * @OA\Put(
+     *     path="/profile/name",
+     *     tags={"Profile"},
+     *     @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             type="object",
+     *             required={"first", "last"},
+     *             @OA\Property(property="first", type="string"),
+     *             @OA\Property(property="last", type="string"),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success response",
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Errors",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="error", type="object", nullable=true,
+     *                 @OA\Property(property="code", type="integer"),
+     *                 @OA\Property(property="message", type="string"),
+     *             ),
+     *             @OA\Property(property="violations", type="array", nullable=true, @OA\Items(
+     *                 type="object",
+     *                 @OA\Property(property="propertyPath", type="string"),
+     *                 @OA\Property(property="title", type="string"),
+     *             ))
+     *         )
+     *     ),
+     *     security={{"oauth2": {"common"}}}
+     * )
      * @Route("/profile/name", name="profile.name", methods={"PUT"})
      * @param Request $request
      * @param Name\Handler $handler
